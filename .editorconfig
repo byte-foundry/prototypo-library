@@ -1,0 +1,67 @@
+{
+	"extends": "airbnb",
+	"env": {
+		"es6": true,
+        "browser": true
+    },
+	"parser": "babel-eslint",
+	"parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+			"experimentalObjectRestSpread": true
+        }
+    },
+	"fallbackPrettierOptions": {
+		"printWidth": 80,
+		"tabWidth": 4,
+		"singleQuote": true,
+		"trailingComma": "all",
+		"bracketSpacing": false,
+		"semi": true,
+		"useTabs": true,
+		"parser": "babylon",
+		"jsxBracketSameLine": true
+	},
+    "rules": {
+		"strict": 0,
+		"no-constant-condition": 2,
+		"no-extra-parens": [2, "functions"],
+		"no-inner-declarations": [2, "functions"],
+		"no-negated-in-lhs": 1,
+		"no-unused-expressions": [2, {"allowShortCircuit": true, "allowTernary": true}],
+		"no-useless-call": 2,
+		"vars-on-top": 1,
+		"no-catch-shadow": 2,
+		"no-unused-vars": 1,
+		"no-use-before-define": [2, "nofunc"],
+		"brace-style": [2, "stroustrup", {"allowSingleLine": true}],
+		"consistent-this": [2, "self"],
+		"max-depth": [1, 3],
+		"no-mixed-spaces-and-tabs": [2, "smart-tabs"],
+		"newline-after-var": [1, "always"],
+		"no-negated-condition": 1,
+		"object-curly-spacing": [2, "never"],
+		"operator-linebreak": [2, "before"],
+		"semi": 1,
+		"keyword-spacing": [2, {"before": true, "after": true}],
+		"space-infix-ops": [2, {"int32Hint": false}],
+		"class-methods-use-this": 0,
+
+		"indent": [2, "tab"],
+        "react/jsx-indent": [2, "tab"],
+        "react/jsx-indent-props": [2, "tab"],
+        "no-tabs": 0,
+
+        "react/prop-types": 0,
+		"react/no-multi-comp": 1,
+		"react/require-default-props": 0,
+		"react/no-unescaped-entities": 0,
+
+		"import/extensions": 1
+    },
+	"plugins": [
+		"react"
+	]
+}
