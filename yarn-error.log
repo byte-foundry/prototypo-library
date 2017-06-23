@@ -1,0 +1,35 @@
+Arguments: 
+  /home/franzp/.nvm/versions/node/v8.1.2/bin/node /usr/share/yarn/bin/yarn.js add webpack babel worker-loader
+
+PATH: 
+  /home/franzp/.nvm/versions/node/v8.1.2/bin:/home/franzp/bin:/home/franzp/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  0.17.10
+
+Node version: 
+  8.1.2
+
+Platform: 
+  linux x64
+
+npm manifest: 
+  {
+    "name": "prototypo-library",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "FranzPoize <francois.poizat@gmail.com>",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com:443
+      at Object.exports._errnoException (util.js:1016:11)
+      at errnoException (dns.js:55:15)
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:91:26)
