@@ -12,7 +12,7 @@ const validTemplates = [
 	'spectral.ptf',
 ];
 
-const PtypoWorker = require('worker-loader!./worker.js');
+const PtypoWorker = require('worker-loader?inline!./worker.js');
 
 export default class Ptypo {
 	constructor(token) {
@@ -31,8 +31,8 @@ export default class Ptypo {
 				'Authorization': `Bearer ${this.token}`,
 			},
 		});
-		const json = await font.json();
-		const data = JSON.stringify(json);
+		const data = await font.json();
+		const json = JSON.parse(data);
 		const worker = new PtypoWorker();
 
 		return new Promise((resolve, reject) => {
@@ -70,8 +70,8 @@ export class PtypoFont {
 				this.values[param.name] = param.init;
 			});
 		});
-		this.glyphsSet = _.uniq(json.glyphs.map((glyph) => {
-			return String.fromCharCode(glyph.unicode);
+		this.glyphsSet = _.uniq(Object.keys(json.glyphs).map((key) => {
+			return String.fromCharCode(json.glyphs[key].unicode);
 		}));
 		this.worker.postMessage({
 			type: 'subset',
@@ -88,6 +88,9 @@ export class PtypoFont {
 
 				document.fonts.add(this.otfFont);
 			}
+			else if (e.data.type === 'props') {
+				this.glyphProperties = e.data.result;
+			}
 		});
 	}
 
@@ -97,6 +100,14 @@ export class PtypoFont {
 			type: 'update',
 			data: this.values,
 		});
+		this.worker.postMessage({
+			type: 'getGlyphsProperties',
+			data: ['advanceWidth'],
+		});
+		const {xHeight, capDelta, ascender, descender} = this.values;
+
+		this.globalHeight = xHeight + Math.max(capDelta, ascender) - descender;
+		console.log(this.globalHeight);
 	}
 
 	reset() {
@@ -104,6 +115,12 @@ export class PtypoFont {
 		this.worker.postMessage({
 			type: 'update',
 			data: this.values,
+		});
+		this.worker.postMessage({
+			type: 'getGlyphsProperties',
+			data: {
+				properties: ['advanceWidth'],
+			}
 		});
 	}
 }

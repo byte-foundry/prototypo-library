@@ -66,47 +66,6 @@ function subset(eData) {
 	return font.toArrayBuffer();
 }
 
-function runSharedWorker(self) {
-	const handlers = {};
-
-	self.addEventListener('message', (e) => {
-		let result;
-
-		if (e.data.type && e.data.type in handlers) {
-			result = handlers[e.data.type](e.data);
-
-			if (result === null) {
-				return;
-			}
-
-			arrayBufferMap[currName] = result;
-
-			ports.forEach((port) => {
-				port.postMessage(
-					result,
-				);
-			});
-
-			exportPorts.forEach((port) => {
-				port.postMessage(
-					[result, currName],
-				);
-			});
-		}
-	});
-
-	handlers.fontData = function (eData) {
-		const name = eData.name;
-
-		self.postMessage(
-			[arrayBufferMap[name], name],
-		);
-		return null;
-	};
-
-	handlers.subset = subset;
-}
-
 const handlers = {};
 
 prototypo.paper.setup({
@@ -127,27 +86,11 @@ self.addEventListener('message', (e) => {
 
 		arrayBufferMap[currName] = result;
 
-		ports.forEach((port) => {
-			port.postMessage(
-				result,
-			);
-		});
-
-		exportPorts.forEach((port) => {
-			port.postMessage(
-				[result, currName],
-			);
-		});
+		self.postMessage(
+			result,
+		);
 	}
 });
-
-handlers.closeAll = function () {
-	ports.splice(ports.indexOf(self), 1);
-
-	if (ports.length === 0) {
-		worker.close();
-	}
-};
 
 handlers.font = function (eData) {
 	let fontSource = eData.data,
@@ -227,7 +170,10 @@ handlers.getGlyphsProperties = function (eData) {
 		});
 	}
 
-	return result;
+	return {
+		type: 'props',
+		result,
+	};
 };
 
 handlers.soloAlternate = function (params) {
