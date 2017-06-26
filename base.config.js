@@ -4,7 +4,7 @@ const fs = require('fs');
 
 module.exports = {
 	entry: {
-		bundle: [
+		ptypo: [
 			'babel-polyfill',
 			'./src/index',
 		],
