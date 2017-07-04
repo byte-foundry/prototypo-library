@@ -43,7 +43,10 @@ export default class Ptypo {
 
 				worker.removeEventListener('message', loadFontHandler);
 
-				resolve(new PtypoFont(worker, json, fontName));
+				const font = new PtypoFont(worker, json, fontName);
+
+				font.reset();
+				resolve(font);
 			};
 
 			worker.addEventListener('message', loadFontHandler);
