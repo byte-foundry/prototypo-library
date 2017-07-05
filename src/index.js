@@ -1,3 +1,4 @@
+/* globals _ */
 export const templateNames = {
 	ELZEVIR: 'elzevir.ptf',
 	GROTESK: 'venus.ptf',
@@ -43,10 +44,10 @@ export default class Ptypo {
 
 				worker.removeEventListener('message', loadFontHandler);
 
-				const font = new PtypoFont(worker, json, fontName);
+				const fontInstance = new PtypoFont(worker, json, fontName);
 
-				font.reset();
-				resolve(font);
+				fontInstance.reset();
+				resolve(fontInstance);
 			};
 
 			worker.addEventListener('message', loadFontHandler);
@@ -97,24 +98,14 @@ export class PtypoFont {
 		});
 	}
 
-	changeParam(paramName, paramValue) {
-		this.values[paramName] = paramValue;
-		this.worker.postMessage({
-			type: 'update',
-			data: this.values,
+	changeParams(paramObj) {
+		_.forEach(paramObj, (value, key) => {
+			this.values[key] = value;
 		});
-		this.worker.postMessage({
-			type: 'getGlyphsProperties',
-			data: ['advanceWidth'],
-		});
-		const {xHeight, capDelta, ascender, descender} = this.values;
-
-		this.globalHeight = xHeight + Math.max(capDelta, ascender) - descender;
-		console.log(this.globalHeight);
+		this.createFont();
 	}
 
-	reset() {
-		this.values = _.cloneDeep(this.init);
+	createFont() {
 		this.worker.postMessage({
 			type: 'update',
 			data: this.values,
@@ -123,8 +114,21 @@ export class PtypoFont {
 			type: 'getGlyphsProperties',
 			data: {
 				properties: ['advanceWidth'],
-			}
+			},
 		});
+		const {xHeight, capDelta, ascender, descender} = this.values;
+
+		this.globalHeight = xHeight + Math.max(capDelta, ascender) - descender;
+	}
+
+	changeParam(paramName, paramValue) {
+		this.values[paramName] = paramValue;
+		this.createFont();
+	}
+
+	reset() {
+		this.values = _.cloneDeep(this.init);
+		this.createFont();
 	}
 }
 
