@@ -1,9 +1,10 @@
 {
   "name": "prototypo-library",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "FranzPoize <francois.poizat@gmail.com>",
   "license": "MIT",
+  "main": "dist/ptypo.js",
+  "module": "src/index.js",
   "dependencies": {
     "babel": "^6.23.0",
     "babel-plugin-syntax-async-functions": "^6.13.0",

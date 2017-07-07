@@ -13,6 +13,8 @@ const validTemplates = [
 	'spectral.ptf',
 ];
 
+import _ from 'lodash';
+
 const PtypoWorker = require('worker-loader?inline!./worker.js');
 
 export default class Ptypo {
@@ -131,4 +133,3 @@ export class PtypoFont {
 		this.createFont();
 	}
 }
-
