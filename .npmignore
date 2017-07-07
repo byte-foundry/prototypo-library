@@ -1,0 +1,13 @@
+node_modules
+.tmp
+.tern-port
+.sass-cache
+app/components
+app/bower_components
+app/webcomponents
+app/_typeface/default.typeface.js
+aws.conf.json
+npm-debug.log
+*.swp
+reports/
+coverage
