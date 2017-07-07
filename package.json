@@ -1,22 +1,25 @@
 {
-  "name": "prototypo-library",
-  "version": "1.0.0",
-  "author": "FranzPoize <francois.poizat@gmail.com>",
-  "license": "MIT",
-  "main": "dist/ptypo.js",
-  "module": "src/index.js",
-  "dependencies": {
-    "babel": "^6.23.0",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-plugin-transform-regenerator": "^6.24.1",
-    "babel-polyfill": "^6.23.0",
-    "deptree": "^1.0.0",
-    "lodash.assign": "^4.2.0",
-    "lodash.clonedeep": "^4.5.0",
-    "plumin.js": "^1.10.4",
-    "webpack": "^3.0.0",
-    "worker-loader": "^0.8.0"
-  }
+	"name": "prototypo-library",
+	"version": "1.0.1",
+	"author": "FranzPoize <francois.poizat@gmail.com>",
+	"license": "MIT",
+	"main": "dist/ptypo.js",
+	"module": "src/index.js",
+	"dependencies": {
+		"babel": "^6.23.0",
+		"babel-plugin-syntax-async-functions": "^6.13.0",
+		"babel-plugin-transform-class-properties": "^6.24.1",
+		"babel-plugin-transform-object-rest-spread": "^6.23.0",
+		"babel-plugin-transform-regenerator": "^6.24.1",
+		"babel-polyfill": "^6.23.0",
+		"deptree": "^1.0.0",
+		"lodash.assign": "^4.2.0",
+		"lodash.clonedeep": "^4.5.0",
+		"plumin.js": "^1.10.4",
+		"webpack": "^3.0.0",
+		"worker-loader": "^0.8.0"
+	},
+	"scripts": {
+		"prepare": "webpack --config base.config.js"
+	}
 }
