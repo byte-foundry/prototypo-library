@@ -12,7 +12,7 @@ module.exports = {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '',
 		filename: '[name].js',
-		libraryTarget: 'var',
+		libraryTarget: 'umd',
 		library: 'Ptypo',
 	},
 	module: {
