@@ -5,7 +5,6 @@ const fs = require('fs');
 module.exports = {
 	entry: {
 		ptypo: [
-			'babel-polyfill',
 			'./src/index',
 		],
 	},
@@ -20,9 +19,9 @@ module.exports = {
 		loaders: [
 			{
 				test: /\.jsx?$/,
-				loaders: ['transform/cacheable?envify', 'babel-loader?cacheDirectory'],
+				loaders: ['babel-loader?cacheDirectory'],
 				include: [
-					path.join(__dirname, 'app'),
+					path.join(__dirname, 'src'),
 				],
 			},
 		],
@@ -32,11 +31,6 @@ module.exports = {
 		'./node/window': true,
 		'./node/extend': true,
 	}],
-	plugins: [
-		new webpack.ProvidePlugin({
-			_: 'lodash',
-		}),
-	],
 	resolve: {
 		extensions: ['.js', '.jsx'],
 	},
