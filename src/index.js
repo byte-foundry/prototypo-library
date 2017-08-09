@@ -68,6 +68,7 @@ export class PtypoFont {
 		this.worker = worker;
 		this.json = json;
 		this.values = {};
+		this.shouldDownload = false;
 		this.init = {};
 		this.fontName = fontName;
 		json.controls.forEach((control) => {
@@ -88,6 +89,11 @@ export class PtypoFont {
 			if (e.data instanceof ArrayBuffer) {
 				if (this.otfFont) {
 					document.fonts.delete(this.otfFont);
+				}
+
+				if (this.shouldDownload) {
+					this.downloadResolver(e.data);
+					this.shouldDownload = false;
 				}
 
 				this.otfFont = new FontFace(this.fontName, e.data);
@@ -126,6 +132,25 @@ export class PtypoFont {
 	changeParam(paramName, paramValue) {
 		this.values[paramName] = paramValue;
 		this.createFont();
+	}
+
+
+
+	download() {
+		this.shouldDownload = true;
+		return new Promise(((resolve) => {
+			this.downloadResolver = resolve;
+			this.worker.postMessage({
+				type: 'otfFont',
+				data: {
+					family: this.fontName,
+					style: 'regular',
+					merged: true,
+					values: this.values
+				},
+				serialized: false,
+			});
+		}));
 	}
 
 	reset() {
