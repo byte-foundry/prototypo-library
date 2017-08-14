@@ -136,7 +136,7 @@ export class PtypoFont {
 
 
 
-	download() {
+	getArrayBuffer() {
 		this.shouldDownload = true;
 		return new Promise(((resolve) => {
 			this.downloadResolver = resolve;

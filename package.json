@@ -1,6 +1,6 @@
 {
   "name": "prototypo-library",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "FranzPoize <francois.poizat@gmail.com>",
   "license": "MIT",
   "main": "dist/ptypo.js",
