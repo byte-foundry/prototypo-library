@@ -108,8 +108,8 @@ export class PtypoFont {
 	}
 
 	changeParams(paramObj) {
-		paramObj.forEach((value, key) => {
-			this.values[key] = value;
+		Object.keys(paramObj).forEach((key) => {
+			this.values[key] = paramObj[key];
 		});
 		this.createFont();
 	}
