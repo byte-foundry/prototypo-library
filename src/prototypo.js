@@ -3,7 +3,7 @@ let plumin = require('plumin.js'),
 	cloneDeep = require('lodash.clonedeep'),
 	Utils = require('./Utils.js'),
 	naive = require('./naive.js'),
-	find = require('lodash/find');
+	find = require('lodash.find');
 
 let paper = plumin.paper,
 	psProto = paper.PaperScope.prototype,

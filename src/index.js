@@ -13,7 +13,8 @@ const validTemplates = [
 	'spectral.ptf',
 ];
 
-import _ from 'lodash';
+import uniq from "lodash.uniq";
+import cloneDeep from "lodash.clonedeep";
 
 const PtypoWorker = require('worker-loader?inline!./worker.js');
 
@@ -77,7 +78,7 @@ export class PtypoFont {
 				this.values[param.name] = param.init;
 			});
 		});
-		this.glyphsSet = _.uniq(Object.keys(json.glyphs).map((key) => {
+		this.glyphsSet = uniq(Object.keys(json.glyphs).map((key) => {
 			return String.fromCharCode(json.glyphs[key].unicode);
 		}));
 		this.worker.postMessage({
@@ -107,7 +108,7 @@ export class PtypoFont {
 	}
 
 	changeParams(paramObj) {
-		_.forEach(paramObj, (value, key) => {
+		paramObj.forEach((value, key) => {
 			this.values[key] = value;
 		});
 		this.createFont();
@@ -154,7 +155,7 @@ export class PtypoFont {
 	}
 
 	reset() {
-		this.values = _.cloneDeep(this.init);
+		this.values = cloneDeep(this.init);
 		this.createFont();
 	}
 }
