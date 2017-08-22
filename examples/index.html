@@ -4,14 +4,16 @@
 	</head>
 	<body>
 		<div style="font-family: 'hello'">hello</div>
-		<script src="/dist/ptypo.js"></script>
+		<script async src="/dist/ptypo.js" id="script"></script>
 		<script>
+		document.getElementById('script').addEventListener('load', function() {
 			const factory = new Ptypo.default();
 			factory.createFont('hello', Ptypo.templateNames.ELZEVIR)
 				.then((font) => {
 					font.reset();
 					font.changeParam('thickness', 300);
 				});
+		});
 		</script>
 	</body>
 </html>

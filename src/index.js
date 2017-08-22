@@ -1,9 +1,12 @@
-/* globals _ */
+import uniq from "lodash.uniq";
+import cloneDeep from "lodash.clonedeep";
+
 export const templateNames = {
 	ELZEVIR: 'elzevir.ptf',
 	GROTESK: 'venus.ptf',
 	FELL: 'john-fell.ptf',
 	SPECTRAL: 'spectral.ptf',
+	ANTIQUE: 'antique.ptf',
 };
 
 const validTemplates = [
@@ -11,10 +14,8 @@ const validTemplates = [
 	'venus.ptf',
 	'john-fell.ptf',
 	'spectral.ptf',
+	'antique.ptf',
 ];
-
-import uniq from "lodash.uniq";
-import cloneDeep from "lodash.clonedeep";
 
 const PtypoWorker = require('worker-loader?inline!./worker.js');
 
@@ -32,7 +33,7 @@ export default class Ptypo {
 		const font = await fetch(`https://tc1b6vq6o8.execute-api.eu-west-1.amazonaws.com/dev/fonts/${fontTemplate}`, {
 			method: 'GET',
 			headers: {
-				'Authorization': `Bearer ${this.token}`,
+				Authorization: `Bearer ${this.token}`,
 			},
 		});
 		const data = await font.json();
