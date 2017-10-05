@@ -29,8 +29,7 @@ export default class Ptypo {
 		if (validTemplates.indexOf(fontTemplate) === -1) {
 			throw new Error('template not found, please use a correct template Name');
 		}
-
-		const font = await fetch(`https://tc1b6vq6o8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
+		const font = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${this.token}`,
