@@ -19,33 +19,6 @@ const validTemplates = [
 
 const PtypoWorker = require('worker-loader?inline!./worker.js');
 
-const finishCreation = (worker, json, fontName, data) => {
-	return new Promise((resolve, reject) => {
-		const loadFontHandler = (e) => {
-			if (typeof e.data !== 'object') {
-				reject();
-			}
-
-			worker.removeEventListener('message', loadFontHandler);
-
-			const fontInstance = new PtypoFont(worker, json, fontName);
-
-			fontInstance.reset();
-			resolve(fontInstance);
-		};
-
-		worker.addEventListener('message', loadFontHandler);
-
-		worker.postMessage({
-			type: 'font',
-			name: fontName,
-			data,
-		});
-	});
-}
-
-const downloadedFonts = {};
-
 export default class Ptypo {
 	constructor(token) {
 		this.token = token;
@@ -54,31 +27,40 @@ export default class Ptypo {
 
 	async createFont(fontName, fontTemplate) {
 		if (validTemplates.indexOf(fontTemplate) === -1) {
-			throw new Error('template not found, please use a correct template name');
+			throw new Error('template not found, please use a correct template Name');
 		}
-		if (downloadedFonts[fontTemplate]) {
-			return downloadedFonts[fontTemplate];
-		}
-		else {
-			downloadedFonts[fontTemplate] = {};
-			const fontPromise = new Promise(async (resolve) => {
-				const font = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${this.token}`,
-					},
-				});
-				const data = await font.json();
-				const json = JSON.parse(data);
-				const worker = new PtypoWorker();
-				resolve(finishCreation(worker, json, fontName, data));
-			})
-			downloadedFonts[fontTemplate] = fontPromise;
-			return fontPromise;
-		}
+		const font = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${this.token}`,
+			},
+		});
+		const data = await font.json();
+		const json = JSON.parse(data);
+		const worker = new PtypoWorker();
 
-		return finishCreation(worker, json, fontName, data);
+		return new Promise((resolve, reject) => {
+			const loadFontHandler = (e) => {
+				if (typeof e.data !== 'object') {
+					reject();
+				}
 
+				worker.removeEventListener('message', loadFontHandler);
+
+				const fontInstance = new PtypoFont(worker, json, fontName);
+
+				fontInstance.reset();
+				resolve(fontInstance);
+			};
+
+			worker.addEventListener('message', loadFontHandler);
+
+			worker.postMessage({
+				type: 'font',
+				name: fontName,
+				data,
+			});
+		});
 	}
 }
 
