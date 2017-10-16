@@ -72,6 +72,8 @@ export class PtypoFont {
 		this.shouldDownload = false;
 		this.init = {};
 		this.fontName = fontName;
+		this.buildingResolver = () => {};
+
 		json.controls.forEach((control) => {
 			control.parameters.forEach((param) => {
 				this.init[param.name] = param.init;
@@ -97,9 +99,12 @@ export class PtypoFont {
 					this.shouldDownload = false;
 				}
 
+				this.otfSource = e.data;
 				this.otfFont = new FontFace(this.fontName, e.data);
 
 				document.fonts.add(this.otfFont);
+
+				this.buildingResolver(this);
 			}
 			else if (e.data.type === 'props') {
 				this.glyphProperties = e.data.result;
@@ -111,7 +116,7 @@ export class PtypoFont {
 		Object.keys(paramObj).forEach((key) => {
 			this.values[key] = paramObj[key];
 		});
-		this.createFont();
+		return this.createFont();
 	}
 
 	createFont() {
@@ -128,11 +133,15 @@ export class PtypoFont {
 		const {xHeight, capDelta, ascender, descender} = this.values;
 
 		this.globalHeight = xHeight + Math.max(capDelta, ascender) - descender;
+
+		return new Promise(resolve => {
+			this.buildingResolver = resolve;
+		})
 	}
 
 	changeParam(paramName, paramValue) {
 		this.values[paramName] = paramValue;
-		this.createFont();
+		return this.createFont();
 	}
 
 
@@ -156,6 +165,6 @@ export class PtypoFont {
 
 	reset() {
 		this.values = cloneDeep(this.init);
-		this.createFont();
+		return this.createFont();
 	}
 }
