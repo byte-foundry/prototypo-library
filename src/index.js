@@ -5,7 +5,7 @@ export const templateNames = {
 	ELZEVIR: 'elzevir.ptf',
 	GROTESK: 'venus.ptf',
 	FELL: 'john-fell.ptf',
-	SPECTRAL: 'spectral.ptf',
+	SPECTRAL: 'gfnt.ptf',
 	ANTIQUE: 'antique.ptf',
 };
 
@@ -13,7 +13,7 @@ const validTemplates = [
 	'elzevir.ptf',
 	'venus.ptf',
 	'john-fell.ptf',
-	'spectral.ptf',
+	'gfnt.ptf',
 	'antique.ptf',
 ];
 
