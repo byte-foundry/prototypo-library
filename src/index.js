@@ -9,13 +9,7 @@ export const templateNames = {
 	ANTIQUE: 'antique.ptf',
 };
 
-const validTemplates = [
-	'elzevir.ptf',
-	'venus.ptf',
-	'john-fell.ptf',
-	'gfnt.ptf',
-	'antique.ptf',
-];
+const validTemplates = Object.values(templateNames);
 
 const PtypoWorker = require('worker-loader?inline!./worker.js');
 
@@ -29,14 +23,28 @@ export default class Ptypo {
 		if (validTemplates.indexOf(fontTemplate) === -1) {
 			throw new Error('template not found, please use a correct template Name');
 		}
-		const font = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
+		const data = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${this.token}`,
 			},
 		});
-		const data = await font.json();
-		const json = JSON.parse(data);
+
+		if (!data.ok && data.statusCode === 403) {
+			throw new Error(
+				"The domain from where you're using the Prototypo library is not authorized. You can manage authorized domains in the developers page on your account. See https://app.prototypo.io/#/account/prototypo-library"
+			);
+		}
+
+
+		const json = await data.json();
+
+		if (!this.token /*|| TODO: check if AWS returned a free font */) {
+			console.warn(
+				"You're using the free version of the Prototypo library. Get a pro account now and access the entire glyphset. https://app.prototypo.io/#/account/subscribe"
+			);
+		}
+
 		const worker = new PtypoWorker();
 
 		return new Promise((resolve, reject) => {
@@ -58,7 +66,7 @@ export default class Ptypo {
 			worker.postMessage({
 				type: 'font',
 				name: fontName,
-				data,
+				data: JSON.stringify(json),
 			});
 		});
 	}
