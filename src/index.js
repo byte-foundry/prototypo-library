@@ -23,7 +23,7 @@ export default class Ptypo {
 		if (validTemplates.indexOf(fontTemplate) === -1) {
 			throw new Error('template not found, please use a correct template Name');
 		}
-		const font = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
+		const data = await fetch(`https://e4jpj60rk8.execute-api.eu-west-1.amazonaws.com/prod/fonts/${fontTemplate}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${this.token}`,
@@ -35,6 +35,7 @@ export default class Ptypo {
 				"The domain from where you're using the Prototypo library is not authorized. You can manage authorized domains in the developers page on your account. See https://app.prototypo.io/#/account/prototypo-library"
 			);
 		}
+
 
 		const json = await data.json();
 
